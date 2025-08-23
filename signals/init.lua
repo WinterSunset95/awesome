@@ -4,4 +4,5 @@ return {
 	client = require("signals.client"),
 	screen = require("signals.screen"),
 	ruled = require("signals.ruled"),
+	network = require("signals.network"),
 }

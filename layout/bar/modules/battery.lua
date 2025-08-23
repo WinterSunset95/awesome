@@ -43,10 +43,22 @@ if bat_status == nil or charge == nil then
 	})
 	return
 end
-local status = bat_status:read("*a")
 bat_status:close()
-local charge_level = charge:read("*a")
 charge:close()
+
+local function battery_color(battery)
+	if battery < 15 then
+		return "#ff0000"
+	elseif battery < 30 then
+		return "#0ff000"
+	elseif battery < 50 then
+		return "#00ff00"
+	elseif battery < 70 then
+		return "#000ff0"
+	else
+		return "#000ff0"
+	end
+end
 
 local batttery_widget_template = {
 	{
@@ -56,11 +68,13 @@ local batttery_widget_template = {
 		align = "center",
 		valign = "center",
 		widget = wibox.widget.textbox,
+		forced_width = 40,
+		forced_height = 40,
 	},
 	widget = wibox.container.arcchart,
 	max_value = 100,
 	bg = "#00000000",
-	thickness = 2,
+	thickness = 5,
 	value = 0,
 	start_angle = 4.71238898,
 }
@@ -69,6 +83,7 @@ local batttery_widget = wibox.widget(batttery_widget_template)
 
 awful.widget.watch('bash -c "cat ' .. battery_path .. '/capacity"', 10, function(_, stdout)
 	batttery_widget:set_value(tonumber(stdout))
+	batttery_widget:set_colors({ battery_color(tonumber(stdout)) })
 	local mytextbox = batttery_widget:get_children_by_id("text_role")[1]
 	mytextbox:set_text(stdout)
 end, batttery_widget)

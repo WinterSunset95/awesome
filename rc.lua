@@ -20,6 +20,7 @@ require("rules")
 require("signals")
 require("config.autostart")
 require("layout.bar")
+require("layout.menu")
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to

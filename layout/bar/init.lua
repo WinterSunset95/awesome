@@ -8,18 +8,13 @@ local mytaglist = require("layout.bar.modules.taglist")
 local mytextclock = require("layout.bar.modules.clock")
 local systray = require("layout.bar.modules.systray")
 local battery = require("layout.bar.modules.battery")
+local background_container = require("layout.bar.modules.background_container")
+local serialize = require("helpers.serialize")
+local animate = require("helpers.animate")
 
 local mod = require("bindings.mod")
-
+local menu_configs = require("config.menu")
 local icon_font = "Cousine Nerd Font Mono Black 30"
-
-local side_menu = wibox.widget({
-	homogenous = true,
-	spacing = 5,
-	min_cols_size = 10,
-	min_rows_size = 10,
-	layout = wibox.layout.grid,
-})
 
 awful.screen.connect_for_each_screen(function(s)
 	-- Create a taglist widget
@@ -31,10 +26,27 @@ awful.screen.connect_for_each_screen(function(s)
 		screen = s,
 		width = 60,
 	})
+
+	local function toggleMenu()
+		awesome.emit_signal("toggle::menu")
+		if s.mywibox.x == 0 then
+			animate(0.1, 60, s.mywibox.x, menu_configs.menu_width, "", function(pos)
+				s.mywibox.x = pos
+				s.mywibox:struts({ left = pos + 60, right = 0, bottom = 0, top = 0 })
+			end)
+		else
+			animate(0.1, 60, s.mywibox.x, 0, "", function(pos)
+				s.mywibox.x = pos
+				s.mywibox:struts({ left = pos + 60, right = 0, bottom = 0, top = 0 })
+			end)
+		end
+	end
+
 	-- Add widgets to the wibox
 	s.mywibox:setup({
 		layout = wibox.layout.margin,
-		margins = 10,
+		margins = 5,
+		bg = beautiful.bg_normal,
 		{
 			layout = wibox.layout.align.vertical,
 			{
@@ -49,7 +61,7 @@ awful.screen.connect_for_each_screen(function(s)
 					bg = beautiful.bg_focus,
 					shape = gears.shape.rounded_rect,
 					buttons = gears.table.join(awful.button({}, 1, function()
-						naughty.notify({ text = "hello" })
+						toggleMenu()
 					end)),
 				},
 				mytextclock,
@@ -59,22 +71,19 @@ awful.screen.connect_for_each_screen(function(s)
 			{
 				{
 					{
-						{
-							s.mytaglist,
-							widget = wibox.container.margin,
-							margins = 5,
-						},
-						widget = wibox.container.background,
-						shape = gears.shape.rounded_rect,
-						bg = beautiful.bg_focus,
+						s.mytaglist,
+						widget = wibox.container.margin,
+						margins = 5,
 					},
-					widget = wibox.layout.fixed.vertical,
-					spacing = 5,
+					widget = wibox.container.background,
+					shape = gears.shape.rounded_rect,
+					bg = beautiful.bg_focus,
+					forced_width = 50,
 				},
 				widget = wibox.container.place,
 			},
 			{
-				battery,
+				background_container(battery, 5, "battery_container"),
 				widget = wibox.layout.align.vertical,
 			},
 		},
