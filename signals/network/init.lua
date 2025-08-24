@@ -49,6 +49,8 @@ local function get_network_status()
 			local ip_address = string.format("%s.%s.%s.%s", o1, o2, o3, o4)
 			status.IP = ip_address
 			status.SSID = lines[4]
+			status.SSID = status.SSID:gsub("\n", "  ")
+			--status.SSID = (#status.SSID > 13) and (status.SSID:sub(1, 10) .. "...") or status.SSID
 			--log(status)
 			if
 				prev.WirelessEnabled == status.WirelessEnabled

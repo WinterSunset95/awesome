@@ -11,6 +11,7 @@ local circle_icon = require("components.circle_icon")
 local user = require("user")
 local control_panel = require("layout.menu.modules.control_panel")
 local menu_configs = require("config.menu")
+local notifications = require("layout.menu.modules.notifications")
 
 local screen = awful.screen.focused()
 
@@ -64,8 +65,9 @@ menu:setup({
 				visible = false,
 			},
 			control_panel,
-			battery,
+			notifications,
 			widget = wibox.layout.fixed.vertical,
+			fill_space = true,
 			spacing = 10,
 		},
 		widget = wibox.container.margin,

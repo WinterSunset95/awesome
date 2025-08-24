@@ -5,4 +5,7 @@ return {
 	screen = require("signals.screen"),
 	ruled = require("signals.ruled"),
 	network = require("signals.network"),
+	volume = require("signals.volume"),
+	brightness = require("signals.brightness"),
+	bluetooth = require("signals.bluetooth"),
 }

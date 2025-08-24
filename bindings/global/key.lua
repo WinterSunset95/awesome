@@ -207,11 +207,11 @@ local globalkeys = gears.table.join(
 	end, { description = "Volume Down", group = "Custom" }),
 
 	awful.key({ mod.super, mod.ctrl }, "Left", function()
-		awful.spawn("xbacklight -dec 5")
+		awful.spawn("brightnessctl s 5%-")
 	end, { description = "Brightness Down", group = "Custom" }),
 
 	awful.key({ mod.super, mod.ctrl }, "Right", function()
-		awful.spawn("xbacklight -inc 5")
+		awful.spawn("brightnessctl s +5%")
 	end, { description = "Brightness Up", group = "Custom" }),
 
 	awful.key({ mod.super, mod.ctrl, mod.alt }, "Right", function()

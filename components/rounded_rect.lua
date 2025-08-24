@@ -20,10 +20,14 @@ local function create_rounded_rect(signal)
 				{
 					{
 						{
-							text = "Wi-Fi",
-							font = text_font .. " 12",
-							widget = wibox.widget.textbox,
-							id = "role_name",
+							{
+								text = "Wi-Fi",
+								font = text_font .. " 12",
+								widget = wibox.widget.textbox,
+								id = "role_name",
+							},
+							step_function = wibox.container.scroll.step_functions.linear_back_and_forth,
+							layout = wibox.layout.scroll.horizontal,
 						},
 						{
 							text = "Off",

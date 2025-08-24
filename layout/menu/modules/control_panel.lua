@@ -34,7 +34,6 @@ awesome.connect_signal("wifi_button:1", function()
 		awful.spawn.easy_async_with_shell("nmcli radio wifi on", function(stdout) end)
 	end
 end)
-
 awesome.connect_signal("network::status", function(state)
 	wifi_status = state.WirelessEnabled
 	wifi_status_while_click = not wifi_status
@@ -58,21 +57,50 @@ local bluetooth_role_logo = bluetooth_button:get_children_by_id("role_logo")[1]
 local bluetooth_role_name = bluetooth_button:get_children_by_id("role_name")[1]
 local bluetooth_role_id = bluetooth_button:get_children_by_id("role_id")[1]
 local bluetooth_role_container = bluetooth_button:get_children_by_id("role_container")[1]
-bluetooth_role_container.buttons = gears.table.join(awful.button({}, 1, function()
-	naughty.notify({ text = "Bluetooth button clicked!!" })
-end))
+local bluetooth_status = false
+local bluetooth_status_while_click = not bluetooth_status
 bluetooth_role_logo.text = ""
 bluetooth_role_name.text = "Bluetooth"
+awesome.connect_signal("bluetooth_button:1", function()
+	naughty.notify({ title = "Patience!!", text = "Wait for bluetooth status to update!!" })
+	if bluetooth_status_while_click == bluetooth_status then
+		naughty.notify({ title = "Patience!!", text = "Wait for bluetooth status to update!!" })
+		return
+	end
+	bluetooth_status_while_click = bluetooth_status
+	if bluetooth_status then
+		naughty.notify({ title = "Bluetooth update", text = "Turning bluetooth off!! Please wait!!" })
+		awful.spawn.easy_async_with_shell("bluetoothctl power off", function(stdout) end)
+	else
+		naughty.notify({ title = "Bluetooth update", text = "Turning bluetooth on!! Please wait!!" })
+		awful.spawn.easy_async_with_shell("bluetoothctl power on", function(stdout) end)
+	end
+end)
+
+awesome.connect_signal("bluetooth::status", function(state)
+	bluetooth_status = state.Powered
+	bluetooth_status_while_click = not bluetooth_status
+	if state.Powered == true then
+		naughty.notify({ title = "Bluetooth update", text = "Connected to: " .. state.Name })
+		bluetooth_role_container:set_bg(beautiful.bg_focus)
+		bluetooth_role_container:set_fg(beautiful.fg_focus)
+		bluetooth_role_name.text = state.Name
+		bluetooth_role_id.text = state.Address
+	else
+		naughty.notify({ title = "Bluetooth update", text = "Disconnected" })
+		bluetooth_role_container:set_bg(beautiful.fg_normal)
+		bluetooth_role_container:set_fg(beautiful.bg_normal)
+		bluetooth_role_name.text = "Bluetooth"
+		bluetooth_role_id.text = "off"
+	end
+end)
 
 local vol_slider_obj = slider()
 local vol_slider = vol_slider_obj.slider
 local vol_display = vol_slider_obj.displayer
 local vol_control = vol_slider_obj.controller
-awful.spawn.easy_async_with_shell("pactl get-sink-volume @DEFAULT_SINK@", function(stdout)
-	local volume = stdout:match("(%d+)%%")
-	local vol_without_percentage = string.gsub(volume, "%%", "")
-	vol_display.value = tonumber(vol_without_percentage)
-	log(vol_without_percentage)
+awesome.connect_signal("volume::update", function(volume)
+	vol_display.value = volume
 end)
 vol_control:connect_signal("property::value", function(params)
 	vol_display.value = params.value
@@ -80,7 +108,20 @@ vol_control:connect_signal("property::value", function(params)
 		"pactl set-sink-volume @DEFAULT_SINK@ " .. params.value .. "%",
 		function(stdout) end
 	)
-	log(params.value)
+end)
+
+local br_slider_obj = slider()
+local br_slider = br_slider_obj.slider
+local br_icon = br_slider_obj.text
+br_icon.text = "󰃠"
+local br_display = br_slider_obj.displayer
+local br_control = br_slider_obj.controller
+awesome.connect_signal("brightness::update", function(brightness)
+	br_display.value = brightness
+end)
+br_control:connect_signal("property::value", function(params)
+	br_display.value = params.value
+	awful.spawn.easy_async_with_shell("brightnessctl set " .. params.value .. "%", function(stdout) end)
 end)
 
 local control_panel = wibox.widget({
@@ -92,7 +133,10 @@ local control_panel = wibox.widget({
 	},
 	{
 		vol_slider,
+		br_slider,
 		widget = wibox.container.background,
+		layout = wibox.layout.fixed.vertical,
+		spacing = 10,
 	},
 	layout = wibox.layout.fixed.vertical,
 	spacing = 10,
