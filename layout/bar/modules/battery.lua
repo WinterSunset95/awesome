@@ -5,6 +5,25 @@ local beautiful = require("beautiful")
 local naughty = require("naughty")
 local gfs = require("gears.filesystem")
 
+local batttery_widget = wibox.widget({
+	{
+		id = "text_role",
+		text = "0",
+		font = "Cousine Nerd Font Mono Black 12",
+		align = "center",
+		valign = "center",
+		widget = wibox.widget.textbox,
+		forced_width = 40,
+		forced_height = 40,
+	},
+	widget = wibox.container.arcchart,
+	max_value = 100,
+	bg = "#00000000",
+	thickness = 5,
+	value = 0,
+	start_angle = 4.71238898,
+})
+
 local function find_battery_path()
 	local power_path = "/sys/class/power_supply"
 	local handle = io.popen("ls " .. power_path)
@@ -13,7 +32,7 @@ local function find_battery_path()
 			title = "Error",
 			text = "No battery found",
 		})
-		return
+		return nil
 	end
 	local folders = handle:read("*a")
 	handle:close()
@@ -31,7 +50,7 @@ if battery_path == nil then
 		title = "Error",
 		text = "No battery found",
 	})
-	return
+	return batttery_widget
 end
 
 local bat_status = io.open(battery_path .. "/status")
@@ -41,7 +60,7 @@ if bat_status == nil or charge == nil then
 		title = "Error",
 		text = "Could not get battery status or charge",
 	})
-	return
+	return batttery_widget
 end
 bat_status:close()
 charge:close()
@@ -60,32 +79,11 @@ local function battery_color(battery)
 	end
 end
 
-local batttery_widget_template = {
-	{
-		id = "text_role",
-		text = "0",
-		font = "Cousine Nerd Font Mono Black 12",
-		align = "center",
-		valign = "center",
-		widget = wibox.widget.textbox,
-		forced_width = 40,
-		forced_height = 40,
-	},
-	widget = wibox.container.arcchart,
-	max_value = 100,
-	bg = "#00000000",
-	thickness = 5,
-	value = 0,
-	start_angle = 4.71238898,
-}
-
-local batttery_widget = wibox.widget(batttery_widget_template)
-
 awful.widget.watch('bash -c "cat ' .. battery_path .. '/capacity"', 10, function(_, stdout)
-	batttery_widget:set_value(tonumber(stdout))
-	batttery_widget:set_colors({ battery_color(tonumber(stdout)) })
+	batttery_widget:set_value(tonumber(stdout) or 0)
+	batttery_widget:set_colors({ battery_color(tonumber(stdout) or 0) })
 	local mytextbox = batttery_widget:get_children_by_id("text_role")[1]
-	mytextbox:set_text(stdout)
+	mytextbox:set_text(stdout or 0)
 end, batttery_widget)
 
 return batttery_widget

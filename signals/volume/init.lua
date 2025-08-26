@@ -12,7 +12,7 @@ awful.spawn.easy_async_with_shell("killall pactl", function(stdout) end)
 
 awful.spawn.easy_async_with_shell("pactl get-sink-volume @DEFAULT_SINK@", function(stdout)
 	local volume = stdout:match("(%d+)%%")
-	local vol_without_percentage = string.gsub(volume, "%%", "")
+	local vol_without_percentage = string.gsub(volume, "%%", "") or 0
 	awesome.emit_signal("volume::update", tonumber(vol_without_percentage))
 end)
 
@@ -21,7 +21,7 @@ awful.spawn.with_line_callback("pactl subscribe", {
 		if string.find(line, "change") then
 			awful.spawn.easy_async_with_shell("pactl get-sink-volume @DEFAULT_SINK@", function(stdout)
 				local volume = stdout:match("(%d+)%%")
-				local vol_without_percentage = string.gsub(volume, "%%", "")
+				local vol_without_percentage = string.gsub(volume, "%%", "") or 0
 				awesome.emit_signal("volume::update", tonumber(vol_without_percentage))
 			end)
 		end
