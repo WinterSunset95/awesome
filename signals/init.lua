@@ -8,4 +8,5 @@ return {
 	volume = require("signals.volume"),
 	brightness = require("signals.brightness"),
 	bluetooth = require("signals.bluetooth"),
+	music = require("signals.music"),
 }

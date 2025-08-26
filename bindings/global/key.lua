@@ -62,9 +62,12 @@ local layout_popup = awful.popup({
 local function print_layout()
 	naughty.notify({
 		preset = naughty.config.presets.normal,
-		title = "Current Layout",
-		text = awful.layout.getname(awful.layout.get(s)),
-		timeout = 1,
+		title = "Layout Change",
+		text = "Layout: " .. awful.layout.getname(awful.layout.get(s)),
+		icon = os.getenv("HOME") .. "/.config/awesome/themes/custom/layouts/" .. awful.layout.getname(
+			awful.layout.get(s)
+		) .. ".png",
+		timeout = 5,
 	})
 	layout_popup.visible = true
 	gears.timer({
@@ -188,6 +191,14 @@ local globalkeys = gears.table.join(
 	awful.key({ mod.super, mod.shift }, "p", function()
 		awful.spawn("flameshot gui --clipboard")
 	end, { description = "Screenshot the selected area", group = "screen" }),
+	--
+	-- Menu and notifications
+	awful.key({ mod.super, mod.shift }, "Return", function()
+		awesome.emit_signal("toggle::menu")
+	end, { description = "Toggle the menu", group = "launcher" }),
+	awful.key({ mod.super, mod.shift }, "n", function()
+		naughty.destroy_all_notifications()
+	end, { description = "Toggle the menu", group = "launcher" }),
 	--
 
 	awful.key({ mod.super }, "y", function()

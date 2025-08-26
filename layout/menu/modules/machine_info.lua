@@ -6,7 +6,7 @@ local beautiful = require("beautiful")
 
 local user = require("user")
 local imageicon = require("components.circle_icon")
-local icon = imageicon(user.user_img, "machine_info")
+local icon = imageicon.create_image_icon(user.user_img, "machine_info")
 
 local icon_font = "Cousine Nerd Font Mono Black 12"
 

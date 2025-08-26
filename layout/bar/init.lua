@@ -22,24 +22,34 @@ awful.screen.connect_for_each_screen(function(s)
 
 	-- Create the wibox
 	s.mywibox = awful.wibar({
+		ontop = true,
 		position = "left",
 		screen = s,
 		width = 60,
 	})
 
-	local function toggleMenu()
-		awesome.emit_signal("toggle::menu")
+	local animating = false
+	awesome.connect_signal("toggle::menu", function()
+		if animating == true then
+			return
+		end
+		animating = true
 		if s.mywibox.x == 0 then
 			animate(0.1, 60, s.mywibox.x, menu_configs.menu_width, "", function(pos)
 				s.mywibox.x = pos
-				s.mywibox:struts({ left = pos + 60, right = 0, bottom = 0, top = 0 })
+				--s.mywibox:struts({ left = pos + 60, right = 0, bottom = 0, top = 0 })
 			end)
 		else
 			animate(0.1, 60, s.mywibox.x, 0, "", function(pos)
 				s.mywibox.x = pos
-				s.mywibox:struts({ left = pos + 60, right = 0, bottom = 0, top = 0 })
+				--s.mywibox:struts({ left = pos + 60, right = 0, bottom = 0, top = 0 })
 			end)
 		end
+		animating = false
+	end)
+
+	local function toggleMenu()
+		awesome.emit_signal("toggle::menu")
 	end
 
 	-- Add widgets to the wibox

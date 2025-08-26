@@ -7,11 +7,15 @@ local animate = require("helpers.animate")
 
 local battery = require("layout.bar.modules.battery")
 local machine_info = require("layout.menu.modules.machine_info")
-local circle_icon = require("components.circle_icon")
+local circle_icon = require("components.circle_icon").create_image_icon
 local user = require("user")
 local control_panel = require("layout.menu.modules.control_panel")
 local menu_configs = require("config.menu")
 local notifications = require("layout.menu.modules.notifications")
+local tabslist = require("layout.menu.modules.tabs")
+local music_player = require("layout.menu.modules.music_player")
+local weather = require("layout.menu.modules.weather")
+local settings = require("layout.menu.modules.settings")
 
 local screen = awful.screen.focused()
 
@@ -24,7 +28,6 @@ local menu = wibox({
 	height = menu_configs.menu_height,
 	width = menu_configs.menu_width,
 	widget = wibox.container.margin,
-	margins = 10,
 	bg = "#00000000",
 })
 
@@ -43,33 +46,75 @@ local userinfo = wibox.widget({
 	bg = beautiful.bg_focus,
 })
 
-menu:setup({
+local container = wibox.widget({
 	{
+		userinfo,
 		{
-			userinfo,
 			{
-				{
-					circle_icon(user.user_img, "machine_info"),
-					widget = wibox.container.margin,
-					forced_width = 100,
-					forced_height = 100,
-				},
-				machine_info,
-				widget = wibox.layout.fixed.horizontal,
-				fill_space = true,
-				spacing = 10,
+				circle_icon(user.user_img, "machine_info"),
+				widget = wibox.container.margin,
+				forced_width = 100,
+				forced_height = 100,
 			},
-			{
-				widget = wibox.widget.separator,
-				forced_height = 10,
-				visible = false,
-			},
-			control_panel,
-			notifications,
-			widget = wibox.layout.fixed.vertical,
+			machine_info,
+			widget = wibox.layout.fixed.horizontal,
 			fill_space = true,
 			spacing = 10,
 		},
+		{
+			widget = wibox.widget.separator,
+			forced_height = 10,
+			visible = false,
+		},
+		control_panel,
+		widget = wibox.layout.fixed.vertical,
+		spacing = 10,
+	},
+	{
+		notifications,
+		widget = wibox.container.margin,
+		top = 10,
+		bottom = 10,
+	},
+	tabslist,
+	widget = wibox.layout.align.vertical,
+	spacing = 10,
+})
+awesome.connect_signal("tab::notifications", function()
+	container.second = wibox.widget({
+		notifications,
+		widget = wibox.container.margin,
+		top = 10,
+		bottom = 10,
+	})
+end)
+awesome.connect_signal("tab::music", function()
+	container.second = wibox.widget({
+		music_player,
+		widget = wibox.container.margin,
+		top = 10,
+		bottom = 10,
+	})
+end)
+awesome.connect_signal("tab::weather", function()
+	container.second = wibox.widget({
+		weather,
+		widget = wibox.container.margin,
+		top = 10,
+		bottom = 10,
+	})
+end)
+awesome.connect_signal("tab::settings", function()
+	container.second = wibox.widget({
+		settings,
+		widget = wibox.container.margin,
+		top = 10,
+		bottom = 10,
+	})
+end)
+menu:setup({
+	{
+		container,
 		widget = wibox.container.margin,
 		margins = 10,
 	},
@@ -77,7 +122,12 @@ menu:setup({
 	widget = wibox.container.background,
 })
 
+local animating = false
 awesome.connect_signal("toggle::menu", function()
+	if animating == true then
+		return
+	end
+	animating = true
 	if menu.x == -menu_configs.menu_width then
 		animate(0.1, 60, -menu_configs.menu_width, 0, "", function(pos)
 			menu.x = pos
@@ -87,6 +137,7 @@ awesome.connect_signal("toggle::menu", function()
 			menu.x = pos
 		end)
 	end
+	animating = false
 end)
 
 return menu

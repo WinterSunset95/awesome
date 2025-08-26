@@ -6,6 +6,7 @@ local beautiful = require("beautiful")
 local log = require("helpers.debugger").log
 
 local notif_history = {}
+local notif_history_hashmap = {}
 local notif_index = #notif_history
 local function get_slice(tbl, start, length)
 	local result = {}
@@ -22,7 +23,57 @@ local function get_slice(tbl, start, length)
 	return result
 end
 
-local function generate_notification_item(args)
+local notification_list = wibox.widget({
+	widget = wibox.layout.fixed.vertical,
+	spacing = 10,
+	buttons = gears.table.join(
+		awful.button({}, 4, function()
+			awesome.emit_signal("notification::scroll_up")
+		end),
+		awful.button({}, 5, function()
+			awesome.emit_signal("notification::scroll_down")
+		end)
+	),
+})
+
+local function generate_notification_item(args) end
+
+local function redraw_notifications()
+	notif_index = #notif_history
+	notification_list:reset()
+	local to_show = get_slice(notif_history, notif_index, 6)
+	for _, new_args in pairs(to_show) do
+		local new_notif = generate_notification_item(new_args)
+		notification_list:add(new_notif)
+	end
+end
+
+local function add_notification(args)
+	table.insert(notif_history, args)
+	notif_history_hashmap[args] = #notif_history
+	redraw_notifications()
+end
+
+local function remove_notification(args)
+	local i = notif_history_hashmap[args]
+	if not i then
+		return
+	end
+	local last = notif_history[#notif_history]
+	notif_history[i] = last
+	notif_history[#notif_history] = nil
+	notif_history_hashmap[last] = i
+	notif_history_hashmap[args] = nil
+	redraw_notifications()
+end
+
+local function remove_all()
+	notif_history = {}
+	notif_history_hashmap = {}
+	redraw_notifications()
+end
+
+generate_notification_item = function(args)
 	local notification_item = wibox.widget({
 		{
 			{
@@ -88,43 +139,14 @@ local function generate_notification_item(args)
 		bg = beautiful.bg_normal,
 		shape = gears.shape.rounded_rect,
 		buttons = gears.table.join(awful.button({}, 1, function()
-			-- naughty.destroy(args)
-			naughty.notify({
-				title = "Test Notification",
-				text = "This is a test notification",
-				icon = "/home/autumn/Desktop/Arch-Dotfiles/awesome/themes/custom/layouts/tile.png",
-			})
+			remove_notification(args)
 		end)),
 	})
 	return notification_item
 end
 
-local notification_list = wibox.widget({
-	widget = wibox.layout.fixed.vertical,
-	spacing = 10,
-	buttons = gears.table.join(
-		awful.button({}, 4, function()
-			awesome.emit_signal("notification::scroll_up")
-		end),
-		awful.button({}, 5, function()
-			awesome.emit_signal("notification::scroll_down")
-		end)
-	),
-})
-
-local function draw_notification(args)
-	table.insert(notif_history, args)
-	notif_index = #notif_history
-	notification_list:reset()
-	local to_show = get_slice(notif_history, notif_index, 6)
-	for _, new_args in pairs(to_show) do
-		local new_notif = generate_notification_item(new_args)
-		notification_list:add(new_notif)
-	end
-end
-
 naughty.config.notify_callback = function(args)
-	draw_notification(args)
+	add_notification(args)
 	return args
 end
 
@@ -169,16 +191,18 @@ local title = wibox.widget({
 	{
 		{
 			font = "Cousine Nerd Font Mono Black 20",
-			text = "󰎟",
+			text = "",
 			widget = wibox.widget.textbox,
 			align = "center",
 		},
 		widget = wibox.container.background,
-		forced_width = 30,
+		forced_width = 40,
 		forced_height = 30,
 		bg = beautiful.bg_normal,
-		shape = gears.shape.circle,
-		clip = true,
+		shape = gears.shape.rounded_rect,
+		buttons = gears.table.join(awful.button({}, 1, function()
+			remove_all()
+		end)),
 	},
 	widget = wibox.layout.align.horizontal,
 })

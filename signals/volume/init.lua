@@ -8,6 +8,8 @@ local print = require("helpers.debugger").print
 local serialize = require("helpers.serialize")
 local awful = require("awful")
 
+awful.spawn.easy_async_with_shell("killall pactl", function(stdout) end)
+
 awful.spawn.easy_async_with_shell("pactl get-sink-volume @DEFAULT_SINK@", function(stdout)
 	local volume = stdout:match("(%d+)%%")
 	local vol_without_percentage = string.gsub(volume, "%%", "")
