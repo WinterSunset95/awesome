@@ -36,7 +36,7 @@ local function create_slider()
 		displayer,
 		controller,
 		layout = wibox.layout.stack,
-		forced_height = 10,
+		forced_height = DPI(10),
 	})
 
 	return {

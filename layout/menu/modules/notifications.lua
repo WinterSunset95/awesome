@@ -4,6 +4,7 @@ local wibox = require("wibox")
 local naughty = require("naughty")
 local beautiful = require("beautiful")
 local log = require("helpers.debugger").log
+local create_separator = require("components.separator")
 
 local notif_history = {}
 local notif_history_hashmap = {}
@@ -25,7 +26,7 @@ end
 
 local notification_list = wibox.widget({
 	widget = wibox.layout.fixed.vertical,
-	spacing = 10,
+	spacing = DPI(10),
 	buttons = gears.table.join(
 		awful.button({}, 4, function()
 			awesome.emit_signal("notification::scroll_up")
@@ -90,7 +91,7 @@ generate_notification_item = function(args)
 								layout = wibox.layout.scroll.horizontal,
 							},
 							widget = wibox.container.constraint,
-							width = 300,
+							width = DPI(300),
 						},
 						{
 							{
@@ -103,16 +104,16 @@ generate_notification_item = function(args)
 								layout = wibox.layout.scroll.horizontal,
 							},
 							widget = wibox.container.constraint,
-							width = 300,
+							width = DPI(300),
 						},
-						spacing = 5,
+						spacing = DPI(5),
 						layout = wibox.layout.fixed.vertical,
 					},
 					widget = wibox.container.place,
 				},
 				{
 					widget = wibox.widget.separator,
-					forced_height = 2,
+					forced_height = DPI(2),
 					shape = gears.shape.rounded_bar,
 					color = beautiful.fg_normal,
 					visible = false,
@@ -121,19 +122,19 @@ generate_notification_item = function(args)
 					{
 						image = args.icon,
 						widget = wibox.widget.imagebox,
-						forced_height = 60,
-						forced_width = 60,
+						forced_height = DPI(60),
+						forced_width = DPI(60),
 					},
 					widget = wibox.container.background,
 					shape = gears.shape.rounded_rect,
 					shape_clip = true,
-					forced_width = 60,
-					forced_height = 60,
+					forced_width = DPI(60),
+					forced_height = DPI(60),
 				},
 				layout = wibox.layout.align.horizontal,
 			},
 			widget = wibox.container.margin,
-			margins = 10,
+			margins = DPI(10),
 		},
 		widget = wibox.container.background,
 		bg = beautiful.bg_normal,
@@ -181,13 +182,7 @@ local title = wibox.widget({
 		widget = wibox.widget.textbox,
 		align = "center",
 	},
-	{
-		widget = wibox.widget.separator,
-		forced_height = 2,
-		shape = gears.shape.rounded_bar,
-		color = beautiful.fg_normal,
-		visible = false,
-	},
+	create_separator(2),
 	{
 		{
 			font = "Cousine Nerd Font Mono Black 20",
@@ -196,8 +191,8 @@ local title = wibox.widget({
 			align = "center",
 		},
 		widget = wibox.container.background,
-		forced_width = 40,
-		forced_height = 30,
+		forced_width = DPI(40),
+		forced_height = DPI(30),
 		bg = beautiful.bg_normal,
 		shape = gears.shape.rounded_rect,
 		buttons = gears.table.join(awful.button({}, 1, function()
@@ -213,18 +208,14 @@ local notifications = wibox.widget({
 			title,
 			notification_list,
 			layout = wibox.layout.fixed.vertical,
-			spacing = 10,
+			spacing = DPI(10),
 		},
 		widget = wibox.container.margin,
-		margins = 10,
+		margins = DPI(10),
 	},
 	widget = wibox.container.background,
 	bg = beautiful.bg_focus,
 	shape = gears.shape.rounded_rect,
 })
-
--- awesome.connect_signal("property::notification", function(n)
--- 	log(n)
--- end)
 
 return notifications

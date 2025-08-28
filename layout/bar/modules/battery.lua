@@ -5,25 +5,6 @@ local beautiful = require("beautiful")
 local naughty = require("naughty")
 local gfs = require("gears.filesystem")
 
-local batttery_widget = wibox.widget({
-	{
-		id = "text_role",
-		text = "0",
-		font = "Cousine Nerd Font Mono Black 12",
-		align = "center",
-		valign = "center",
-		widget = wibox.widget.textbox,
-		forced_width = 40,
-		forced_height = 40,
-	},
-	widget = wibox.container.arcchart,
-	max_value = 100,
-	bg = "#00000000",
-	thickness = 5,
-	value = 0,
-	start_angle = 4.71238898,
-})
-
 local function find_battery_path()
 	local power_path = "/sys/class/power_supply"
 	local handle = io.popen("ls " .. power_path)
@@ -78,6 +59,27 @@ local function battery_color(battery)
 		return "#000ff0"
 	end
 end
+
+local batttery_widget_template = {
+	{
+		id = "text_role",
+		text = "0",
+		font = "Cousine Nerd Font Mono Black 12",
+		align = "center",
+		valign = "center",
+		widget = wibox.widget.textbox,
+		forced_width = DPI(40),
+		forced_height = DPI(40),
+	},
+	widget = wibox.container.arcchart,
+	max_value = 100,
+	bg = "#00000000",
+	thickness = DPI(5),
+	value = 0,
+	start_angle = 4.71238898,
+}
+
+local batttery_widget = wibox.widget(batttery_widget_template)
 
 awful.widget.watch('bash -c "cat ' .. battery_path .. '/capacity"', 10, function(_, stdout)
 	batttery_widget:set_value(tonumber(stdout) or 0)

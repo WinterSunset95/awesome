@@ -69,7 +69,7 @@ local tabslist = wibox.widget({
 })
 
 gears.timer.delayed_call(function()
-	awesome.emit_signal("tab::music")
+	awesome.emit_signal("tab::settings")
 end)
 
 return tabslist

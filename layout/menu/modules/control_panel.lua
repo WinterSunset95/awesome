@@ -129,17 +129,17 @@ local control_panel = wibox.widget({
 		wifi_button,
 		bluetooth_button,
 		layout = wibox.layout.flex.horizontal,
-		spacing = 10,
+		spacing = DPI(10),
 	},
 	{
 		vol_slider,
 		br_slider,
 		widget = wibox.container.background,
 		layout = wibox.layout.fixed.vertical,
-		spacing = 10,
+		spacing = DPI(10),
 	},
 	layout = wibox.layout.fixed.vertical,
-	spacing = 10,
+	spacing = DPI(10),
 })
 
 return control_panel

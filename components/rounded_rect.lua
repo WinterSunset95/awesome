@@ -36,16 +36,16 @@ local function create_rounded_rect(signal)
 							id = "role_id",
 						},
 						layout = wibox.layout.fixed.vertical,
-						spacing = 5,
+						spacing = DPI(5),
 					},
 					widget = wibox.container.place,
 				},
 				layout = wibox.layout.fixed.horizontal,
-				spacing = 10,
+				spacing = DPI(10),
 			},
 			id = "margin_container",
 			widget = wibox.container.margin,
-			margins = 10,
+			margins = DPI(10),
 		},
 		id = "role_container",
 		widget = wibox.container.background,
@@ -56,16 +56,16 @@ local function create_rounded_rect(signal)
 			awful.button({}, 1, function()
 				awesome.emit_signal(signal .. "1")
 			end),
-			awful.button({}, 1, function()
+			awful.button({}, 2, function()
 				awesome.emit_signal(signal .. "2")
 			end),
 			awful.button({}, 3, function()
 				awesome.emit_signal(signal .. "3")
 			end),
-			awful.button({}, 1, function()
+			awful.button({}, 4, function()
 				awesome.emit_signal(signal .. "4")
 			end),
-			awful.button({}, 1, function()
+			awful.button({}, 5, function()
 				awesome.emit_signal(signal .. "5")
 			end)
 		),

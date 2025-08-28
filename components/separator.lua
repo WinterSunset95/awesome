@@ -5,7 +5,7 @@ local function create_separator(height)
 	local separator = wibox.widget({
 		widget = wibox.widget.separator,
 		shape = gears.shape.rounded_bar,
-		thickness = 2,
+		thickness = DPI(2),
 		forced_height = height,
 		opacity = 0,
 	})

@@ -27,12 +27,12 @@ local function create_slider()
 	})
 	local controller = wibox.widget({
 		bar_shape = gears.shape.rounded_rect,
-		bar_height = 60,
+		bar_height = DPI(60),
 		bar_color = "#00000000",
-		handle_width = 10,
+		handle_width = DPI(10),
 		handle_color = "#00000000",
 		handle_border_color = "#00000000",
-		handle_border_width = 0,
+		handle_border_width = DPI(0),
 		widget = wibox.widget.slider,
 		minimum = 0,
 		maximum = 100,
@@ -49,11 +49,11 @@ local function create_slider()
 				bg = "#00000000",
 			},
 			widget = wibox.container.margin,
-			left = 20,
+			left = DPI(20),
 		},
 		controller,
 		layout = wibox.layout.stack,
-		forced_height = 60,
+		forced_height = DPI(60),
 	})
 	return {
 		slider = slider,

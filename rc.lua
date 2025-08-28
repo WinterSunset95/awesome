@@ -11,6 +11,7 @@ local naughty = require("naughty")
 local menubar = require("menubar")
 local globalkeys = require("bindings.global.key")
 require("awful.hotkeys_popup.keys")
+DPI = beautiful.xresources.apply_dpi
 
 beautiful.init(gears.filesystem.get_configuration_dir() .. "themes/custom/theme.lua")
 

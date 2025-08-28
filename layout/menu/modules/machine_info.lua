@@ -32,13 +32,13 @@ local machine_info = wibox.widget({
 			layout = wibox.layout.flex.vertical,
 		},
 		widget = wibox.container.margin,
-		margins = 10,
-		forced_height = 100,
+		margins = DPI(10),
+		forced_height = DPI(100),
 	},
 	widget = wibox.container.background,
 	shape = gears.shape.rounded_rect,
 	bg = beautiful.bg_focus,
-	forced_height = 100,
+	forced_height = DPI(100),
 })
 
 return machine_info

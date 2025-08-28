@@ -9,4 +9,5 @@ return {
 	brightness = require("signals.brightness"),
 	bluetooth = require("signals.bluetooth"),
 	music = require("signals.music"),
+	weather = require("signals.weather"),
 }

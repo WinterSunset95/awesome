@@ -23,10 +23,10 @@ local menu = wibox({
 	screen = screen,
 	visible = true,
 	ontop = true,
-	x = -menu_configs.menu_width,
-	y = 0,
-	height = menu_configs.menu_height,
-	width = menu_configs.menu_width,
+	x = -DPI(menu_configs.menu_width),
+	y = DPI(0),
+	height = DPI(menu_configs.menu_height),
+	width = DPI(menu_configs.menu_width),
 	widget = wibox.container.margin,
 	bg = "#00000000",
 })
@@ -39,7 +39,7 @@ local userinfo = wibox.widget({
 			widget = wibox.widget.textbox,
 		},
 		widget = wibox.container.margin,
-		margins = 10,
+		margins = DPI(10),
 	},
 	shape = gears.shape.rounded_rect,
 	widget = wibox.container.background,
@@ -53,70 +53,65 @@ local container = wibox.widget({
 			{
 				circle_icon(user.user_img, "machine_info"),
 				widget = wibox.container.margin,
-				forced_width = 100,
-				forced_height = 100,
+				forced_width = DPI(100),
+				forced_height = DPI(100),
 			},
 			machine_info,
 			widget = wibox.layout.fixed.horizontal,
 			fill_space = true,
-			spacing = 10,
+			spacing = DPI(10),
 		},
 		{
 			widget = wibox.widget.separator,
-			forced_height = 10,
+			forced_height = DPI(10),
 			visible = false,
 		},
 		control_panel,
 		widget = wibox.layout.fixed.vertical,
-		spacing = 10,
+		spacing = DPI(10),
 	},
-	{
-		notifications,
-		widget = wibox.container.margin,
-		top = 10,
-		bottom = 10,
-	},
+	notifications,
 	tabslist,
 	widget = wibox.layout.align.vertical,
-	spacing = 10,
 })
+
 awesome.connect_signal("tab::notifications", function()
 	container.second = wibox.widget({
 		notifications,
 		widget = wibox.container.margin,
-		top = 10,
-		bottom = 10,
+		top = DPI(10),
+		bottom = DPI(10),
 	})
 end)
 awesome.connect_signal("tab::music", function()
 	container.second = wibox.widget({
 		music_player,
 		widget = wibox.container.margin,
-		top = 10,
-		bottom = 10,
+		top = DPI(10),
+		bottom = DPI(10),
 	})
 end)
 awesome.connect_signal("tab::weather", function()
 	container.second = wibox.widget({
 		weather,
 		widget = wibox.container.margin,
-		top = 10,
-		bottom = 10,
+		top = DPI(10),
+		bottom = DPI(10),
 	})
 end)
 awesome.connect_signal("tab::settings", function()
 	container.second = wibox.widget({
 		settings,
 		widget = wibox.container.margin,
-		top = 10,
-		bottom = 10,
+		top = DPI(10),
+		bottom = DPI(10),
 	})
 end)
 menu:setup({
 	{
 		container,
 		widget = wibox.container.margin,
-		margins = 10,
+		margins = DPI(10),
 	},
 	bg = beautiful.bg_normal,
 	widget = wibox.container.background,
@@ -130,11 +125,11 @@ awesome.connect_signal("toggle::menu", function()
 	animating = true
 	if menu.x == -menu_configs.menu_width then
 		animate(0.1, 60, -menu_configs.menu_width, 0, "", function(pos)
-			menu.x = pos
+			menu.x = DPI(pos)
 		end)
 	else
 		animate(0.1, 60, 0, -menu_configs.menu_width, "", function(pos)
-			menu.x = pos
+			menu.x = DPI(pos)
 		end)
 	end
 	animating = false

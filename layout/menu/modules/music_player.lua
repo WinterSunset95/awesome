@@ -86,7 +86,7 @@ local controls = wibox.widget({
 	next,
 	seek_forward,
 	layout = wibox.layout.flex.horizontal,
-	spacing = 10,
+	spacing = DPI(10),
 })
 
 local player = wibox.widget({
@@ -133,7 +133,7 @@ local player = wibox.widget({
 		layout = wibox.layout.fixed.vertical,
 	},
 	widget = wibox.container.margin,
-	margins = 10,
+	margins = DPI(10),
 })
 
 awesome.connect_signal("music::toggle", function()

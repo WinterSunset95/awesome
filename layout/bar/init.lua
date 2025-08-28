@@ -15,6 +15,7 @@ local animate = require("helpers.animate")
 local mod = require("bindings.mod")
 local menu_configs = require("config.menu")
 local icon_font = "Cousine Nerd Font Mono Black 30"
+local user = require("user")
 
 awful.screen.connect_for_each_screen(function(s)
 	-- Create a taglist widget
@@ -25,7 +26,7 @@ awful.screen.connect_for_each_screen(function(s)
 		ontop = true,
 		position = "left",
 		screen = s,
-		width = 60,
+		width = DPI(60),
 	})
 
 	local animating = false
@@ -36,13 +37,17 @@ awful.screen.connect_for_each_screen(function(s)
 		animating = true
 		if s.mywibox.x == 0 then
 			animate(0.1, 60, s.mywibox.x, menu_configs.menu_width, "", function(pos)
-				s.mywibox.x = pos
-				--s.mywibox:struts({ left = pos + 60, right = 0, bottom = 0, top = 0 })
+				s.mywibox.x = DPI(pos)
+				if user.bar_floating == false then
+					s.mywibox:struts({ left = DPI(pos + 60), right = 0, bottom = 0, top = 0 })
+				end
 			end)
 		else
 			animate(0.1, 60, s.mywibox.x, 0, "", function(pos)
-				s.mywibox.x = pos
-				--s.mywibox:struts({ left = pos + 60, right = 0, bottom = 0, top = 0 })
+				s.mywibox.x = DPI(pos)
+				if user.bar_floating == false then
+					s.mywibox:struts({ left = DPI(pos + 60), right = 0, bottom = 0, top = 0 })
+				end
 			end)
 		end
 		animating = false
@@ -55,7 +60,7 @@ awful.screen.connect_for_each_screen(function(s)
 	-- Add widgets to the wibox
 	s.mywibox:setup({
 		layout = wibox.layout.margin,
-		margins = 5,
+		margins = DPI(5),
 		bg = beautiful.bg_normal,
 		{
 			layout = wibox.layout.align.vertical,
@@ -76,19 +81,19 @@ awful.screen.connect_for_each_screen(function(s)
 				},
 				mytextclock,
 				layout = wibox.layout.fixed.vertical,
-				spacing = 5,
+				spacing = DPI(5),
 			},
 			{
 				{
 					{
 						s.mytaglist,
 						widget = wibox.container.margin,
-						margins = 5,
+						margins = DPI(5),
 					},
 					widget = wibox.container.background,
 					shape = gears.shape.rounded_rect,
 					bg = beautiful.bg_focus,
-					forced_width = 50,
+					forced_width = DPI(50),
 				},
 				widget = wibox.container.place,
 			},
