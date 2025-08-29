@@ -7,9 +7,15 @@ local log = require("helpers.debugger").log
 local print = require("helpers.debugger").print
 local serialize = require("helpers.serialize")
 local awful = require("awful")
+local command_exists = require("helpers.commands").command_exists
 
 local prev = {}
 
+log(command_exists("ls"))
+if command_exists("nmcli") then
+  return
+end
+naughty.notify({ text = "NMCLI doesn't exist" })
 local function get_network_status()
 	-- First let's get wifi status
 	awful.spawn.easy_async_with_shell(
