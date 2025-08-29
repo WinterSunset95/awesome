@@ -9,11 +9,13 @@ local serialize = require("helpers.serialize")
 local awful = require("awful")
 local user = require("user")
 
+
+
 local data = {
 	city = "New Delhi",
 	temp = 32,
 	condition = "Sunny",
-	condition_icon = "/tmp/awesome-weather-icon.png",
+	condition_icon = os.getenv("TMPDIR") .. "/awesome-weather-icon.png",
 	date_time = "10:00 AM",
 	wind_speed = 10,
 	humidity = 50,
@@ -56,7 +58,7 @@ gears.timer({
 				awful.spawn.easy_async(
 					"curl --request GET --url 'https:"
 						.. condition_icon
-						.. "' --output /tmp/awesome-"
+						.. "' --output " .. os.getenv("TMPDIR") .. "/awesome-"
 						.. data.condition
 						.. "-weather-icon.png",
 					function()

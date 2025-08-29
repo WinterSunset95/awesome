@@ -5,9 +5,20 @@ local naughty = require("naughty")
 local beautiful = require("beautiful")
 
 local function build(widget, margin, id)
+  if not widget or not margin or not id then
+    local mywidget = wibox.widget({
+      text = "0",
+      font = "Cousine Nerd Font 15",
+      align = "center",
+      widget = wibox.widget.textbox,
+    })
+  else
+    local mywidget = widget
+  end
+
 	local container = wibox.widget({
 		{
-			widget,
+			mywidget,
 			widget = wibox.container.margin,
 			margins = margin,
 		},

@@ -11,7 +11,7 @@ local awful = require("awful")
 awful.spawn.easy_async_with_shell("killall pactl", function(stdout) end)
 
 awful.spawn.easy_async_with_shell("pactl get-sink-volume @DEFAULT_SINK@", function(stdout)
-	local volume = stdout:match("(%d+)%%")
+	local volume = stdout:match("(%d+)%%") or "0%"
 	local vol_without_percentage = string.gsub(volume, "%%", "") or 0
 	awesome.emit_signal("volume::update", tonumber(vol_without_percentage))
 end)

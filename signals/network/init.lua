@@ -65,6 +65,7 @@ local function get_network_status()
 				prev.SSID = status.SSID
 				prev.IP = status.IP
 				prev.Connected = status.Connected
+        print(prev,status)
 				--log("changed")
 			end
 			awesome.emit_signal("network::status", status)

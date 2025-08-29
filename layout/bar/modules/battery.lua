@@ -7,7 +7,7 @@ local gfs = require("gears.filesystem")
 
 local function find_battery_path()
 	local power_path = "/sys/class/power_supply"
-	local handle = io.popen("ls " .. power_path)
+	local handle = io.popen("ls " .. power_path) or nil
 	if handle == nil then
 		naughty.notify({
 			title = "Error",

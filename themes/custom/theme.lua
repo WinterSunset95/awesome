@@ -93,7 +93,7 @@ theme.titlebar_maximized_button_focus_inactive = themes_path .. "custom/titlebar
 theme.titlebar_maximized_button_normal_active = themes_path .. "custom/titlebar/maximized_normal_active.png"
 theme.titlebar_maximized_button_focus_active = themes_path .. "custom/titlebar/maximized_focus_active.png"
 
-theme.wallpaper = "wallpapers/815994.jpg"
+theme.wallpaper = os.getenv("HOME") .. "/.config/awesome/themes/custom/wallpapers/815994.jpg"
 
 -- You can use your own layout icons like this:
 theme.layout_fairh = themes_path .. "custom/layouts/fairhw.png"
