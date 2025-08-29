@@ -32,6 +32,7 @@
 - [inotify-tools](https://github.com/inotify-tools/inotify-tools)
 - libpulse (for pactl)
 - [A rapidapi key](https://rapidapi.com/)
+- uptime (from `uptime` command)
 
 ### Screenshots
 
