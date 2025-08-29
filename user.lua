@@ -3,7 +3,7 @@ local user = {
 	host = "BlackArch",
 	user_img = os.getenv("HOME") .. "/.config/awesome/themes/custom/wallpapers/hayati.jpeg",
 
-	terminal = "alacritty",
+	terminal = "kitty",
 	file_manager = "thunar",
 	browser = "firefox",
 	editor = "nvim",
