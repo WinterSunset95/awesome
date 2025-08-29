@@ -11,7 +11,12 @@ local themes_path = gfs.get_configuration_dir() .. "themes/"
 
 local theme = {}
 
-theme.font = "sans 12"
+theme.font = "Cousine Nerd Font 12"
+
+theme.bg_transparent = "#00000000"
+theme.fg_highlight = "#ffa4f5"
+theme.fg_highlight2 = "#a20010"
+theme.fg_highlight3 = "#bbc010"
 
 theme.bg_normal = "#0D1525cc"
 theme.bg_focus = "#42539D"
@@ -93,7 +98,7 @@ theme.titlebar_maximized_button_focus_inactive = themes_path .. "custom/titlebar
 theme.titlebar_maximized_button_normal_active = themes_path .. "custom/titlebar/maximized_normal_active.png"
 theme.titlebar_maximized_button_focus_active = themes_path .. "custom/titlebar/maximized_focus_active.png"
 
-theme.wallpaper = os.getenv("HOME") .. "/.config/awesome/themes/custom/wallpapers/815994.jpg"
+theme.wallpaper = os.getenv("HOME") .. "/.config/awesome/themes/custom/wallpapers/cafe-at-night.png"
 
 -- You can use your own layout icons like this:
 theme.layout_fairh = themes_path .. "custom/layouts/fairhw.png"

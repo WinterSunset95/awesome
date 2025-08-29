@@ -16,6 +16,7 @@ local tabslist = require("layout.menu.modules.tabs")
 local music_player = require("layout.menu.modules.music_player")
 local weather = require("layout.menu.modules.weather")
 local settings = require("layout.menu.modules.settings")
+local log = require("helpers.debugger").log
 
 local screen = awful.screen.focused()
 
@@ -51,7 +52,7 @@ local container = wibox.widget({
 		userinfo,
 		{
 			{
-				circle_icon(user.user_img, "machine_info"),
+				circle_icon(user.user_img, beautiful.bg_focus, DPI(100), DPI(100), "her::clicked"),
 				widget = wibox.container.margin,
 				forced_width = DPI(100),
 				forced_height = DPI(100),
@@ -123,12 +124,12 @@ awesome.connect_signal("toggle::menu", function()
 		return
 	end
 	animating = true
-	if menu.x == -menu_configs.menu_width then
-		animate(0.1, 60, -menu_configs.menu_width, 0, "", function(pos)
+	if menu.x == 0 then
+		animate(0.1, 60, 0, -DPI(menu_configs.menu_width), "", function(pos)
 			menu.x = DPI(pos)
 		end)
 	else
-		animate(0.1, 60, 0, -menu_configs.menu_width, "", function(pos)
+		animate(0.1, 60, -DPI(menu_configs.menu_width), 0, "", function(pos)
 			menu.x = DPI(pos)
 		end)
 	end

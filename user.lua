@@ -1,7 +1,7 @@
 local user = {
 	name = "Autumn",
 	host = "BlackArch",
-	user_img = os.getenv("HOME") .. "/.config/awesome/themes/custom/wallpapers/hayati.jpeg",
+	user_img = os.getenv("HOME") .. "/Downloads/peach.jpg",
 
 	terminal = "kitty",
 	file_manager = "thunar",

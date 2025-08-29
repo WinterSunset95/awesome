@@ -132,7 +132,7 @@ local globalkeys = gears.table.join(
 		awful.spawn(apps.terminal)
 	end, { description = "open a terminal", group = "launcher" }),
 	awful.key({ mod.super, mod.shift }, "r", awesome.restart, { description = "reload awesome", group = "awesome" }),
-	awful.key({ mod.super, mod.shift }, "e", awesome.quit, { description = "quit awesome", group = "awesome" }),
+	--awful.key({ mod.super, mod.shift }, "e", awesome.quit, { description = "quit awesome", group = "awesome" }),
 
 	awful.key({ mod.super }, "l", function()
 		awful.tag.incmwfact(0.05)

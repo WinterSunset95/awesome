@@ -7,11 +7,15 @@ local animate = require("helpers.animate")
 
 local function create_image_icon(path, color, height, width, signal)
 	local icon = wibox.widget({
-		{
-			image = path,
-			resize = false,
-			widget = wibox.widget.imagebox,
-			id = "role_image",
+    {
+      {
+        image = path,
+        widget = wibox.widget.imagebox,
+        id = "role_image",
+      },
+      widget = wibox.container.place,
+      forced_height = height or nil,
+      forced_width = width or nil,
 		},
 		widget = wibox.container.background,
 		shape_clip = true,
