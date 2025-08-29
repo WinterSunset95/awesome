@@ -16,10 +16,6 @@ local function check_command(command)
   end
 end
 
-if check_command("ls") then
-  naughty.notify({ text = "ls exists" })
-end
-
 return {
   command_exists = check_command
 }
