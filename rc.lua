@@ -10,6 +10,9 @@ local beautiful = require("beautiful")
 local naughty = require("naughty")
 local menubar = require("menubar")
 local globalkeys = require("bindings.global.key")
+local resize_mode_keys = require("bindings.global.resize_mode")
+local mouse_mode = require("bindings.global.mouse_mode")
+local mouse_mode_keys = gears.table.join(mouse_mode, globalkeys)
 require("awful.hotkeys_popup.keys")
 DPI = beautiful.xresources.apply_dpi
 
@@ -58,47 +61,48 @@ end
 menubar.utils.terminal = "alacritty" -- Set the terminal for applications that require it
 -- }}}
 
--- Bind all key numbers to tags.
--- Be careful: we use keycodes to make it work on any keyboard layout.
--- This should map on the top row of your keyboard, usually 1 to 9.
-for i = 1, 9 do
-	globalkeys = gears.table.join(
-		globalkeys,
-		-- View tag only.
-		awful.key({ mod.super }, "#" .. i + 9, function()
-			local screen = awful.screen.focused()
-			local tag = screen.tags[i]
-			if tag then
-				tag:view_only()
-			end
-		end, { description = "view tag #" .. i, group = "tag" }),
-		-- Toggle tag display.
-		awful.key({ mod.super, mod.ctrl }, "#" .. i + 9, function()
-			local screen = awful.screen.focused()
-			local tag = screen.tags[i]
-			if tag then
-				awful.tag.viewtoggle(tag)
-			end
-		end, { description = "toggle tag #" .. i, group = "tag" }),
-		-- Move client to tag.
-		awful.key({ mod.super, mod.shift }, "#" .. i + 9, function()
-			if client.focus then
-				local tag = client.focus.screen.tags[i]
-				if tag then
-					client.focus:move_to_tag(tag)
-				end
-			end
-		end, { description = "move focused client to tag #" .. i, group = "tag" }),
-		-- Toggle tag on focused client.
-		awful.key({ mod.super, mod.ctrl, mod.shift }, "#" .. i + 9, function()
-			if client.focus then
-				local tag = client.focus.screen.tags[i]
-				if tag then
-					client.focus:toggle_tag(tag)
-				end
-			end
-		end, { description = "toggle focused client on tag #" .. i, group = "tag" })
-	)
-end
-
 root.keys(globalkeys)
+local mode = "normal"
+awesome.connect_signal("toggle::resize_mode", function()
+  if mode == "normal" then
+    mode = "resize"
+    root.keys(resize_mode_keys)
+    naughty.notify({
+      preset = naughty.config.presets.normal,
+      title = "Resize Mode",
+      text = "Resize mode activated. Press m to exit.",
+      timeout = 5,
+    })
+  else
+    mode = "normal"
+    root.keys(globalkeys)
+    naughty.notify({
+      preset = naughty.config.presets.normal,
+      title = "Resize Mode",
+      text = "Resize mode deactivated.",
+      timeout = 5,
+    })
+  end
+end)
+
+awesome.connect_signal("toggle::mouse_mode", function()
+  if mode == "normal" then
+    mode = "mouse"
+    root.keys(mouse_mode_keys)
+    naughty.notify({
+      preset = naughty.config.presets.normal,
+      title = "Mouse Mode",
+      text = "Mouse mode activated",
+      timeout = 5,
+    })
+  else
+    mode = "normal"
+    root.keys(globalkeys)
+    naughty.notify({
+      preset = naughty.config.presets.normal,
+      title = "Mouse Mode",
+      text = "Mouse mode deactivated.",
+      timeout = 5,
+    })
+  end
+end)
