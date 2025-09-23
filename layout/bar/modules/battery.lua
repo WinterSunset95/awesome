@@ -29,7 +29,7 @@ local batttery_widget =  wibox.widget({
 	{
 		id = "text_role",
 		text = "0",
-		font = "Cousine Nerd Font Mono Black 12",
+		font = "Cousine Nerd Font Mono Black 8",
 		align = "center",
 		valign = "center",
 		widget = wibox.widget.textbox,

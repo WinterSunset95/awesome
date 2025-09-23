@@ -5,7 +5,7 @@ local user = {
 
 	terminal = "kitty",
 	file_manager = "thunar",
-	browser = "firefox",
+	browser = "qutebrowser",
 	editor = "nvim",
 	music_player = "spotify",
 	image_viewer = "feh",

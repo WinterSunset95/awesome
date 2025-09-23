@@ -47,6 +47,9 @@ gears.timer({
 				.. user.rapid_api_key
 				.. "'",
 			function(stdout)
+        if not stdout:match('"name":"(.-)"') then
+          return
+        end
 				data.city = stdout:match('"name":"(.-)"')
 				data.temp = stdout:match('"temp_c":(.-),')
 				data.condition = stdout:match('"text":"(.-)"')

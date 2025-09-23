@@ -54,8 +54,8 @@ local mytaglist = awful.widget.taglist({
 			shape_border_width = 2,
 			shape_clip = true,
 			shape_border_color = "#0f0000",
-			forced_height = 40,
-			forced_width = 40,
+			forced_height = 30,
+			forced_width = 30,
 		},
 		layout = wibox.layout.flex.vertical,
 		create_callback = function(self, t, index, tags)

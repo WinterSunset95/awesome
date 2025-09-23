@@ -26,7 +26,7 @@ awful.screen.connect_for_each_screen(function(s)
 		ontop = true,
 		position = "left",
 		screen = s,
-		width = DPI(60),
+		width = DPI(50),
 	})
 
 	local animating = false
