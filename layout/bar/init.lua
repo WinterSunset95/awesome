@@ -39,14 +39,14 @@ awful.screen.connect_for_each_screen(function(s)
 			animate(0.1, 60, s.mywibox.x, menu_configs.menu_width, "", function(pos)
 				s.mywibox.x = DPI(pos)
 				if user.bar_floating == false then
-					s.mywibox:struts({ left = DPI(pos + 60), right = 0, bottom = 0, top = 0 })
+					s.mywibox:struts({ left = DPI(pos + 50), right = 0, bottom = 0, top = 0 })
 				end
 			end)
 		else
 			animate(0.1, 60, s.mywibox.x, 0, "", function(pos)
 				s.mywibox.x = DPI(pos)
 				if user.bar_floating == false then
-					s.mywibox:struts({ left = DPI(pos + 60), right = 0, bottom = 0, top = 0 })
+					s.mywibox:struts({ left = DPI(pos + 50), right = 0, bottom = 0, top = 0 })
 				end
 			end)
 		end
